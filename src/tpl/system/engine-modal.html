@@ -1,0 +1,27 @@
+<div class="form-horizontal"   novalidate>
+    <div class="form-group">
+        <label  class="col-md-2 control-label">语言:</label>
+        <label class="radio-inline">
+            <input type="radio" name="code_lang" ng-model="engine.language" value="0">Java
+        </label>
+        <label class="radio-inline">
+            <input type="radio" name="code_lang" ng-model="engine.language" value="1">C/C++
+        </label>
+        <label class="radio-inline">
+            <input type="radio" name="code_lang" ng-model="engine.language" value="2"> C#
+        </label>
+        <label class="radio-inline">
+            <input type="radio" name="code_lang" ng-model="engine.language" value="3"> Python
+        </label>
+        <label class="radio-inline">
+            <input type="radio" name="code_lang" ng-model="engine.language" value="4"> PHP
+        </label>
+    </div>
+    <div class="form-group">
+        <label  class="col-md-2 control-label">ip:</label>
+
+        <div class="col-md-6">
+            <input type="text" class="form-control" ng-model="engine.engineIp" required />
+        </div>
+    </div>
+</div>

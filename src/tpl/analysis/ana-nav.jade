@@ -1,0 +1,11 @@
+.side-bar-nav.angular-ui-tree(ui-tree='options', ng-controller='anaNavController')
+  ol.angular-ui-tree-nodes(ui-tree-nodes='', ng-model='list', data-nodrag='')
+    li.angular-ui-tree-node(ng-repeat='node in list', ui-tree-node='', collapsed='false')
+      .tree-node(ui-tree-handle='', ng-class="'nav-title-active cursor_pointer'", ng-click='toggle(this)')
+        a(ng-if='node.nodes && node.nodes.length > 0', ng-click='toggle(this)')
+          span.glyphicon(ng-class="{ 'glyphicon-chevron-right': collapsed,'glyphicon-chevron-down': !collapsed}")
+        | {{node.title}}
+      ol(ui-tree-nodes='', ng-model='node.nodes', ng-class='{hidden: collapsed}')
+        li(ng-repeat='node in node.nodes', ui-tree-node='', ng-if='!node.hide')
+          .tree-node.tree-node-content(ui-tree-handle='', ng-class="{'active': isActive(node.id) }")
+            a(ng-href='{{node.url}}') {{node.title}}

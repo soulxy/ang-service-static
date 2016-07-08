@@ -1,0 +1,13 @@
+extends ./layout
+
+block head
+  script.
+    var staticHost = !{JSON.stringify(staticHost)};
+  link(href="#{staticHost}/style/app.css?vs=#{vesion}" rel='stylesheet')
+  
+block body
+  p this is index
+  section.root-ui-view(ui-view)
+  script(src="#{staticHost}/js/lib.js?vs=#{vesion}")
+  script(src="#{staticHost}/js/app.js?vs=#{vesion}")
+    

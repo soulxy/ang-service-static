@@ -1,0 +1,196 @@
+<div class="ng-scope">
+    <div class="audit-left" ng-style="{height:widHeight+'px'}">
+        <div class="su-audit-left-header">
+            <div class="form-inline font-bold">
+                危险组件
+            </div>
+            <div style="text-align: left;    margin-top: -40px">
+            <!--    href="#/quickcheck/sy"-->
+                <a tooltip="返回" tooltip-placement="bottom" class="back" back-button><i class="glyphicon"></i></a>
+            </div>
+        </div>
+        <div class="cut-content">
+            <div ng-style="{'overflow-y': 'auto',height:(widHeight-50)+'px'}">
+                <!-- <sybugtree key="bugs" bugs="bugs" open="open()"  domain="domain"></sybugtree>-->
+                <ul class="audit-sy-left">
+                    <li data-ng-repeat="bug in bugs" ng-mouseenter="aduitopt=true" ng-mouseleave="aduitopt=tfalse">
+                        <span data-ng-class="{gray_point:bug.auditResult==0,red_point:bug.auditResult==7,green_point:bug.auditResult==6}"></span>
+                        <a data-ng-click="showInfo(bug)" data-ng-class="{focueselect:bug.isSelect}">{{bug.fileName}}</a>
+                        <span ng-show="aduitopt" style="margin-left:10px;">
+                            <span class="red_point cursor_pointer" ng-click="audit(bug,7);" tooltip="是问题"></span>
+                             <span class="green_point cursor_pointer" ng-click="audit(bug,6);" tooltip="不是问题"></span>
+                        </span>
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="v-split" ewresize ng-style="{height:widHeight+'px'}"></div>
+    <div class="audit-wrapper" ng-style="{height:widHeight+'px'}">
+        <div class="audit-content">
+            <div class="cut-content">
+                <div class="su-audit-left-header">
+                    <div class="form-inline font-bold" ng-if="domain.showSwitch==1">
+                        任务概况
+                    </div>
+                    <div class="form-inline font-bold" ng-if="domain.showSwitch==2">
+                        {{currentBug.fileName}}
+                    </div>
+                </div>
+                <div ng-style="{height:(widHeight-43)+'px','overflow-y': 'auto'} ">
+                    <div ng-if="domain.showSwitch==1" style="padding: 25px; ">
+                        <div class="form-inline">
+                            <span class="border-left font-bold">任务信息概述</span>
+                        </div>
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <label>任务名称:</label><span class="font-bold">{{checkResult.taskVO.codeName}}</span>
+                            </div>
+                        </div>
+                        <div class="form-inline">
+                            <span class="border-left font-bold">检测信息概述</span>
+                        </div>
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <label>源码名称:</label><span class="font-bold">{{checkResult.taskVO.codeName}}</span>
+                            </div>
+                            <div class="form-group">
+                                <label>开发语言:</label><span
+                                    class="font-bold">{{checkResult.taskVO.language|langFilter}}</span>
+                            </div>
+                            <div class="form-group" ng-show="checkResult.taskVO.language==0">
+                                <label>JDK版本:</label><span
+                                    class="font-bold">{{checkResult.taskVO.jdkVersion|JDKFilter}}</span>
+                            </div>
+                            <div class="form-group" ng-show="checkResult.taskVO.language==0">
+                                <label>是否J2ee工程:</label><span class="font-bold">{{checkResult.taskVO.isJ2ee=='Y'?'是':'否'}}</span>
+                            </div>
+                            <div class="form-group" ng-show="checkResult.taskVO.language==2">
+                                <label>解决方案:</label><span
+                                    class="font-bold">{{checkResult.taskVO.csharpFilePath}}</span>
+                            </div>
+                        </div>
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <label>源码来源:</label><span class="font-bold">{{checkResult.taskVO.getCodeType|codeTypeFilter}}</span>
+                            </div>
+
+                            <div class="form-group" ng-if="checkResult.taskVO.getCodeType==0">
+                                <label>源码路径:</label><span class="font-bold">{{checkResult.taskVO.savePath}}</span>
+                            </div>
+                            <div class="form-group" ng-if="checkResult.taskVO.getCodeType!=0">
+                                <label>源码路径:</label><span class="font-bold">{{checkResult.taskVO.svnGitUri}}</span>
+                            </div>
+                        </div>
+                        <div class="form-inline">
+                            <span class="border-left font-bold">检测结果概述</span>
+                        </div>
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <label>检测组件数:</label><span class="font-bold">{{checkResult.componentNum}}</span>
+                            </div>
+                            <div class="form-group">
+                                <label>危险组件数:</label><span
+                                    class="font-bold">{{checkResult.vulComponentNum}}</span>
+                            </div>
+                            <div class="form-group" ng-show="checkResult.taskVO.language==0">
+                                <label>漏洞总数:</label><span
+                                    class="font-bold">{{checkResult.problemNum}}</span>
+                            </div>
+                        </div>
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <label>漏洞总数-高:</label><span class="font-bold">{{checkResult.problemNum5}}</span>
+                            </div>
+                            <div class="form-group">
+                                <label>漏洞总数-中:</label><span
+                                    class="font-bold">{{checkResult.problemNum3}}</span>
+                            </div>
+                            <div class="form-group" ng-show="checkResult.taskVO.language==0">
+                                <label>漏洞总数-低:</label><span
+                                    class="font-bold">{{checkResult.problemNum1}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="domain.showSwitch==2">
+                        <table class="sy-table">
+                            <tr>
+                                <td style="width: 100px;"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 100px;">文件:</td>
+                                <td>{{currentBug.filePath}}</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 100px;">MD5:</td>
+                                <td>{{currentBug.fileMd5}}</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 100px;">SHA1:</td>
+                                <td>{{currentBug.fileSha1}}</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 100px;">CPE:</td>
+                                <td>{{currentBug.cpe}}</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 100px;">开源协议:</td>
+                                <td>{{currentBug.license||"无"}}</td>
+                            </tr>
+                        </table>
+
+                        <accordion close-others="false">
+                            <accordion-group is-open="open" ng-repeat="cveInfo in currentBug.cves">
+                                <accordion-heading>
+                                    <div ng-click="toggleOpen()">
+                                        {{cveInfo.cve}} <i class="pull-right glyphicon"
+                                                           ng-class="{'glyphicon-chevron-down': open, 'glyphicon-chevron-right': !open}"></i>
+                                    </div>
+                                </accordion-heading>
+                                <table class="sy-table">
+                                    <tr>
+                                        <td>漏洞等级:</td>
+                                        <td>{{cveInfo.vulLevel}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>漏洞CVSS评分:</td>
+                                        <td>{{cveInfo.cvssScore}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>发布日期:</td>
+                                        <td>{{cveInfo.publishDate||"无"}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>更新日期:</td>
+                                        <td>{{cveInfo.updateDate||"无"}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>参考信息:</td>
+                                        <td>
+                                            <ul>
+                                                <li data-ng-repeat="quote in cveInfo.quoteList">
+                                                    <label>{{quote.source}}:</label><a href="{{quote.url}}"
+                                                                                       target="_blank">{{quote.name}}</a>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>描述:</td>
+                                        <td ng-bind-html="cveInfo.cveDesc">
+
+                                        </td>
+
+                                    </tr>
+                                </table>
+                            </accordion-group>
+                        </accordion>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,88 @@
+<div class="input-group" style="width: 200px;float:left; margin-top: -4px;">
+    <input type="text" ng-model="condition" ng-keyup="search(condition)" class="form-control"
+           placeholder="关键字">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" ng-click="search(condition)">查找</button>
+                    </span>
+</div>
+<div class="to-right" ng-show="false"><a class="cursor_pointer txt-green"
+                                         ng-click="addEngine('添加用户')">+添加引擎</a>
+</div>
+<div class="blank-line"></div>
+
+<table class="table" style="border: 1px solid #d8e1ea;">
+    <thead>
+    <tr>
+        <th class="col-md-2">IP</th>
+        <th class="col-md-2">操作系统</th>
+        <th class="col-md-2">CPU</th>
+        <th class="col-md-1">内存</th>
+        <th class="col-md-2">硬盘容量</th>
+        <th class="col-md-2">最大并发数</th>
+        <!-- lijiaming -->
+        <th class="col-md-1">状态</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="machine in listToDisplay" class="tr-line">
+        <td colspan="7">
+            <div class="row tr-row">
+                <div class="col-md-2  cursor_pointer" data-ng-click="showMore=!showMore">
+                    <a><i ng-class="{'collapse-icon':!showMore,'expand-icon':showMore}"></i>{{machine.machineIp}}</a>
+                </div>
+                <div class="col-md-2">{{machine.machineOs|osFilter}}</div>
+                <div class="col-md-2">{{machine.machineCpu}}</div>
+                <div class="col-md-1">{{machine.machineMemory}}</div>
+                <div class="col-md-2">{{machine.machineDisk}}</div>
+                <div class="col-md-2">
+                    <number-edit machine="machine"></number-edit>
+                </div>
+                <!-- lijiaming -->
+                <div class="col-md-1" ng-bind-html='machineStatus(machine)'></div>
+            </div>
+            <div class="row  sub-table line-y-icon" ng-if="showMore">
+                <div  style="margin-left: 78px; margin-right: 78px;">
+                    <table class="table line-y-cover-close-icon" style="width:100%;border: 1px solid #d8e1ea;">
+                        <thead>
+                        <tr>
+                            <th style="width: 30%">引擎名称</th>
+                            <th style="width: 25%">检测类型</th>
+                            <th style="width: 25%">语言</th>
+                            <th style="width: 20%">状态</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="engine in machine.engines">
+                            <td style="position: relative"><i class="line-x-icon"
+                                                              style="position: absolute;top:17px;left: -48px;width: 48px;height: 2px;"></i>
+                                {{engine.engineName}}
+                            </td>
+                            <td> {{engine.checkType|checkFilter}}</td>
+                            <td>
+                                {{engine.language|langFilter}}
+                            </td>
+                            <td class="report-status{{engine.engineStatus}}">
+                                {{engine.engineStatus|engineStstusFilter}}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="cover-line-block"></div>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div class="text-center">
+    <div local-pagination
+         raw-data="engines"
+         display-data="listToDisplay"
+         limit="15">
+    </div>
+</div>
+
+
+
+

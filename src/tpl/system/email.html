@@ -1,0 +1,62 @@
+<div class="panel-heading">
+
+</div>
+<form name="emailFrom">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-7">
+            <div class="form-horizontal" novalidate>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">邮箱服务器地址:</label>
+
+                    <div class="col-md-6">
+                       <!-- /(\w{1,}\.){2,3}\w{1,}$/-->
+                        <input type="text" class="form-control" ng-model="emailConfig.mailHost" ng-pattern="/smtp\.(\w{1,}\.){1,2}\w{1,}$/" placeholder="样例:smtp.sina.com.cn" maxlength="100" required/>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="rule-tip-font">*必须是smtp协议地址</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">邮箱名:</label>
+                    <div class="col-md-6">
+                        <input type="email" class="form-control" ng-model="emailConfig.username" placeholder="样例:codesafe@360.cn" maxlength="30" required/>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="rule-tip-font">*填写正确的邮箱地址</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">密码:</label>
+
+                    <div class="col-md-6">
+                        <input type="password" class="form-control" ng-model="emailConfig.psd" maxlength="100" required/>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="rule-tip-font">*密码为必填项</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">身份验证:</label>
+                    <div class="col-md-6">
+                        <label class="radio-inline">
+                            <input type="radio" name="auth"  ng-model="emailConfig.auth" value="Y">是
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="auth" ng-model="emailConfig.auth" value="N">否
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4">
+                        <button ng-click="configEmail()" class="btn btn-green" ng-disabled="emailFrom.$invalid">提交</button>
+                    </div>
+                    <div class="col-md-4"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+</form>
+

@@ -1,0 +1,37 @@
+<div class="form-horizontal"   novalidate>
+    <div class="form-group">
+        <label  class="col-md-2 control-label">缺陷分类:</label>
+        <div class="col-md-10">
+            <div style="max-height:250px;overflow-y: auto; overflow-x:hidden ">
+                <ul tree id="bugTypeTree" class="ztree" datas="searchParam.bugTypes" children="sons" name="typeName" key="ruleCode" check="true" self-checked="true"></ul>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">审计状态:</label>
+
+        <div class="col-md-10">
+            <label class="checkbox-inline">
+                <input type="checkbox"  ng-model="searchParam.auditStatus.high" ng-true-value="5" ng-false-value="false">高
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox"  ng-model="searchParam.auditStatus.middle" ng-true-value="3" ng-false-value="false">中
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox"  ng-model="searchParam.auditStatus.low" ng-true-value="1" ng-false-value="false">低
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox"  ng-model="searchParam.auditStatus.safe" ng-true-value="6" ng-false-value="false">不是问题
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox"  ng-model="searchParam.auditStatus.noaudit" ng-true-value="0" ng-false-value="false">未审计
+            </label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label  class="col-md-2 control-label">文件名:</label>
+        <div class="col-md-10">
+            <input type="tel " class="form-control" ng-model="searchParam.fileName" maxlength="100"  />
+        </div>
+    </div>
+</div>

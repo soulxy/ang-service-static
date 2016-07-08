@@ -1,0 +1,187 @@
+<div>
+    <div class="content">
+        <div>
+            <div class="el-pos" ng-if="hasPower('QuickCheck_AddTask')">
+                <a class="btn btn-green" href="#/quickcheck/configcheck/0"><i class="add-icon icon-white"></i>发起快速检测</a>
+            </div>
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading">
+                    <span class="font-bold">任务列表</span>
+                    <div class="right cursor_pointer" ng-click="search_toggle()"><i class="glyphicon"
+                                                                                    ng-class="action_search?'glyphicon-arrow-up':'glyphicon-arrow-down'"></i>查询
+                    </div>
+                </div>
+                <div class="panel-body" ng-show="action_search">
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <label for="task-name-filter">任务名称:</label>
+                            <input type="text" class="form-control" id="task-name-filter" ng-model="condition.taskName">
+                        </div>
+                        <div class="form-group">
+                            <label for="task-name-filter">创建者:</label>
+                            <input type="text" class="form-control" ng-model="condition.user_name">
+                        </div>
+                        <div class="form-group">
+                            <label for="lang">开发语言:</label>
+                            <select class="form-control" ng-model="condition.lang" id="lang" convert-to-number>
+                                <option value="-1">全部</option>
+                                <option value="{{lang.value}}" data-ng-repeat="lang in global.langs">{{lang.label}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="status-filter">检测状态:</label>
+                            <select class="form-control" ng-model="condition.status" id="status-filter"
+                                    convert-to-number>
+                                <option value="-1">全部</option>
+                                <option value="0">未开始</option>
+                                <option value="1">检测中</option>
+                                <option value="2">检测成功</option>
+                                <option value="3">检测失败</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-inline">
+                        <div class="form-group form-width">
+                            <label for="start-time-filter">发起时间:</label>
+                            <div class="input-group">
+                                <input type="datetime" class="form-control" ng-model="condition.stime"   readonly
+                                       id="start-time-filter" datepicker-popup="yyyy-MM-dd" is-open="condition.fromOpened"
+                                       datepicker-options="dateOptions" min-date="minDate" max-date="maxDate"
+                                       close-text="关闭" current-text="今天" clear-text="清空">
+                            <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="openFrom($event)"><i
+                                    class="glyphicon glyphicon-calendar"></i></button>
+                             </span>
+                            </div>
+                            -
+                            <div class="input-group">
+                                <input type="datetime" class="form-control" ng-model="condition.etime"  readonly
+                                        datepicker-popup="yyyy-MM-dd" is-open="condition.endOpened"
+                                       datepicker-options="dateOptions" min-date="minDate" max-date="maxDate"
+                                       close-text="关闭" current-text="今天" clear-text="清空">
+                            <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="openEnd($event)"><i
+                                    class="glyphicon glyphicon-calendar"></i></button>
+                             </span>
+                            </div>
+                            <span class="rule-tip-font" ng-if="condition.etime!=''&&condition.stime!=''&&condition.etime<condition.stime">结束时间必须大于开始时间</span>
+                        </div>
+                        <div class="form-group form-width">
+                            <label for="bug-count-filter">缺陷总数:</label>
+                            <input type="number"
+                                   class="form-control"
+                                   ng-model="condition.minBugCount"
+                                   onkeyup="value=value.replace(/[^\d]/g,'')"
+                                   onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g, ''))"
+                                   id="bug-count-filter" min="0">
+                            -
+                            <input type="number"
+                                   class="form-control"
+                                   onkeyup="value=value.replace(/[^\d]/g,'')"
+                                   onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g, ''))"
+                                   ng-model="condition.maxBugCount" min="0">
+                            <span class="rule-tip-font" ng-if="condition.maxBugCount!== ''&&condition.minBugCount>condition.maxBugCount">下限值不能大于上限值</span>
+                        </div>
+                        <div class="form-group form-width" ng-show="false">
+                            <label>隐患密度:</label>
+                            <input type="number" class="form-control">
+                            -
+                            <input type="number" class="form-control">
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button class="btn btn-blue" ng-disabled="!searchValidation()" ng-click="search()">查询</button>
+                        <button class="btn btn-orange" ng-click="clearCondition();">清除查询条件</button>
+                        <button class="btn btn-gray" ng-show="false">高级查询</button>
+                    </div>
+                </div>
+                <!-- Table -->
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th><input  type="checkbox" ng-model="checkModel.checkall"   my-check="checkModel.checkAll(tasksToDisplay)"></th>
+                        <th>任务名称</th>
+                        <th>开发语言</th>
+                        <th>发起时间</th>
+                        <th>完成时间</th>
+                        <th>检测状态</th>
+                        <th>缺陷总数</th>
+                        <th>等级分布</th>
+                        <th>创建者</th>
+                        <th class="th-left-line"><a class="txt-yellow" ng-click="removes()" ng-class="{disabled:!hasCheck(tasksToDisplay)}" ng-if="hasPower('QuickCheck_DelTask')">删除选中项</a></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                  <!--  <tr ng-repeat="item in tasks|orderBy:'taskVO.taskBeginTime':true">-->
+                    <tr ng-show="!tasksToDisplay">
+                        <td span="9" class="text-center">正在加载...</td>
+                    </tr>
+                    <tr ng-repeat="item in tasksToDisplay">
+                        <td><input type="checkbox" ng-model="item.checked" my-check ="checkModel.check(item,tasksToDisplay)" ng-disabled="item.disabled" /></td>
+                        <td>{{item.taskVO.codeName}}</td>
+                        <td>{{item.taskVO.language|langFilter}}</td>
+                        <td>{{item.taskVO.taskBeginTime|intDateFilter}}</td>
+                        <td>{{item.taskVO.taskEndTime|intDateFilter}}</td>
+                        <td>
+                            <div ng-switch="item.taskVO.taskStatus">
+                                <div  ng-switch-when="1" style="width: 120px;">
+                                    <div class="bar" ng-style="{width:item.taskVO.progress+'%'}">{{item.taskVO.progress}}%</div>
+                                </div>
+                                <div  ng-switch-when="3" style="width: 120px;">
+                                    <span tooltip="{{item.taskVO.taskResultDesc}}" class="check-status-{{item.taskVO.taskStatus}} cursor_pointer">{{item.taskVO.taskStatus|taskStatusFilter}}</span>
+                                </div>
+                                <div ng-switch-default>
+                                    <span class="check-status-{{item.taskVO.taskStatus}}">{{item.taskVO.taskStatus|taskStatusFilter}}</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div ng-switch="item.taskVO.taskStatus">
+                                <div ng-switch-when="2">
+                                    {{item.taskVO.problemNum}}
+                                </div>
+                                <div ng-switch-default>
+                                   --
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div ng-switch="item.taskVO.taskStatus">
+                                <div ng-switch-when="2">
+                                    <gradebar tooltip="高：{{item.taskVO.problemNum5}} | 中：{{item.taskVO.problemNum3}} | 低：{{item.taskVO.problemNum1}}" count="item.taskVO.problemNum" low="item.taskVO.problemNum1" middle="item.taskVO.problemNum3" high="item.taskVO.problemNum5"></gradebar>
+                                </div>
+                                <div ng-switch-default>
+                                    --
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{item.user_name}}</td>
+                        <td>
+                            <div>
+                                <a ng-if="hasPower('QuickCheck_QueryRes')" a-disabled="item.taskVO.taskStatus!==2" href="#/dashboard/{{item.taskVO.pkTask}}/0/0" tooltip="查看结果"><i class="iconfont">&#xe608;</i></a>
+                                <span style="width:50px;"></span>
+                                <a ng-if="hasPower('QuickCheck_Audit')" a-disabled="item.taskVO.taskStatus!==2" href="#/audit/{{item.taskVO.pkTask}}/0" tooltip="缺陷审计"><i class="iconfont">&#xe607;</i></a>
+                                <span style="width:50px;"></span>
+                                <a ng-if="hasPower('Report')&&hasPower('QuickCheck_Report')" a-disabled="item.taskVO.taskStatus!==2" ng-click="exportReport(item.taskVO)" tooltip="导出报告"><i class="iconfont">&#xe606;</i></a>
+                                <span style="width:50px;"></span>
+                                <a ng-if="hasPower('QuickCheck_ModiPerm')" a-disabled="item.taskVO.taskStatus===3" ng-click="modifyPower(item)" tooltip="修改访问权限"><i class="iconfont">&#xe609;</i></a>
+                               <!-- <span style="width:50px;"></span>
+                                <a a-disabled="item.taskVO.taskStatus===3" ng-click="configBugSystem(item.taskVO)" tooltip="配置缺陷跟踪系统"><i class="iconfont">&#xe605;</i></a>-->
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="text-center">
+                    <div local-pagination
+                         raw-data="tasks"
+                         display-data="tasksToDisplay"
+                         limit="15"
+                         change="checkModel.unCheckAll(tasksToDisplay)"   >
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,67 @@
+<div class="form-horizontal" novalidate>
+    <div class="form-group">
+        <label class="col-md-2 control-label">模板名称:</label>
+
+        <div class="col-md-10">
+            <input type="text" name="templateName" class="form-control" ng-model="tpl.templateName" required
+                   maxlength="30"
+                   tooltip="{{modalForm.templateName.$invalid?'模板名称不能为空':''}}" tooltip-placement="bottom"
+                    />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">访问权限:</label>
+
+        <div class="col-md-10">
+            <label class="radio-inline">
+                <input type="radio" name="inlineRadioOptions" ng-model="tpl.templatePerm" value="0" checked> 仅自己
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="inlineRadioOptions" ng-model="tpl.templatePerm" value="1"> 指定人员
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="inlineRadioOptions" ng-model="tpl.templatePerm" value="2"> 全部
+            </label>
+        </div>
+    </div>
+    <div class="form-group" ng-show="tpl.templatePerm==1">
+        <label class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <div style="max-height:200px;overflow-y: auto; " >
+                <ul tree  class="ztree" datas="users" children="children" key="datapk" name="nodename" check="true"></ul>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="form-inline">
+            <label class="col-md-2 control-label">开发语言:</label>
+            <div class="col-md-10">
+                <select class="form-control col-md-4" ng-model="tpl.templateLang" ng-change="changeLang(tpl.templateLang)"
+                        ng-options="item.value as item.label  for item in global.langs">
+                </select>
+                <div  ng-if="type==1">
+                    <label class=" col-md-2 control-label">规范:</label>
+                    <select class="form-control" ng-change="changeStandard(standardName);" ng-model="tplModal.standardName" ng-options="standard.standardName as standard.standardName for standard in tplModal.standards">
+                    </select>
+                </div>
+          </div>
+        </div>
+    </div>
+
+    <div class="form-group" ng-init="type=0">
+        <label class="col-md-2 control-label"  ng-if="type==0">缺陷类型:</label>
+        <label class="col-md-2 control-label"  ng-if="type==1">违规类型:</label>
+        <div class="col-md-10">
+            <div style="max-height:250px;overflow-y: auto; overflow-x: hidden; ">
+                <ul tree  id="tplTree" class="ztree" datas="rules" children="nodes" key="value" check="true" self-checked="true"></ul>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">描述信息:</label>
+        <div class="col-md-10">
+            <textarea class="form-control" ng-model="tpl.templateDesc" maxlength="50"></textarea>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,47 @@
+<div class="form-horizontal"   novalidate>
+    <div class="form-group">
+        <label  class="col-md-3 control-label">缺陷跟踪系统:</label>
+        <div class="col-md-9">
+            <select class="form-control" ng-model="bugConfig.systemType">
+                <option value="bugzilla">bugzilla</option>
+                <option value="bugfree">bugfree</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label  class="col-md-3 control-label">跟踪系统地址:</label>
+        <div class="col-md-9">
+            <input type="url"  class="form-control" ng-model="bugConfig.url" maxlength="200" required />
+        </div>
+    </div>
+    <div class="form-group">
+        <label  class="col-md-3 control-label">用户名:</label>
+        <div class="col-md-9">
+            <input type="text " class="form-control" ng-model="bugConfig.userName" maxlength="100" required />
+        </div>
+    </div>
+    <div class="form-group">
+        <label  class="col-md-3 control-label">密码:</label>
+        <div class="col-md-9">
+            <input type="password" name="confirmPwd" class="form-control"  ng-model="bugConfig.pwd" maxlength="100"  required />
+        </div>
+    </div>
+    <div class="form-group">
+        <label  class="col-md-3 control-label">product:</label>
+        <div class="col-md-9">
+            <input type="text " class="form-control" ng-model="bugConfig.product" maxlength="200" required />
+        </div>
+    </div>
+    <div class="form-group">
+        <label  class="col-md-3 control-label">component:</label>
+        <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="bugConfig.component" maxlength="100" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label  class="col-md-3 control-label">Version:</label>
+        <div class="col-md-9">
+            <input type="text " class="form-control" ng-model="bugConfig.version" maxlength="20"  />
+        </div>
+    </div>
+</div>

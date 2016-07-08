@@ -1,0 +1,25 @@
+<div class="form-horizontal add-dept"   novalidate>
+    <div class="form-group">
+        <label  class="col-md-2 control-label">部门名称:</label>
+        <div class="col-md-10">
+            <input type="text" name="orgName" class="form-control" ng-model="dept.orgName" placeholder="请输入部门名称" required
+                   maxlength="30"
+                   tooltip="{{modalForm.orgName.$invalid?'部门名称不能为空':''}}" tooltip-placement="bottom"
+                    />
+        </div>
+    </div>
+    <div class="form-group">
+        <label  class="col-md-2 control-label">上级部门:</label>
+        <div class="col-md-10">
+            <selecttree  datas="depts"  maxheight="250" value="parentNode" children="children" key="datapk" name="nodename"></selecttree>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">描述信息:</label>
+        <div class="col-md-10">
+            <textarea class="form-control" ng-model="dept.orgDesc" maxlength="50"></textarea>
+
+        </div>
+    </div>
+
+</div>

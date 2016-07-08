@@ -1,0 +1,35 @@
+<div class="form-horizontal">
+    <div class="form-group">
+        <label class="col-md-3 control-label">报告名称:</label>
+        <div class="col-md-9">
+            <input type="text" class="form-control" name="rpName" ng-model="reportParam.rpName" maxlength="30" required placeholder="输入报告名称">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-3 control-label">导出格式:</label>
+        <div class="col-md-9">
+            <label class="radio-inline">
+                <input type="radio" name="format" ng-model="reportParam.format" value="0">Word
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="format" ng-model="reportParam.format" value="2">Excel
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="format" ng-model="reportParam.format" value="1">PDF
+            </label>
+        </div>
+    </div>
+
+    <!-- <div class="form-group">
+        <label class="col-md-3 control-label">报告类型:</label>
+        <div class="col-md-9">
+            <label class="radio-inline">
+                <input type="radio" name="ifshowAduitonly" ng-model="reportParam.ifshowAduitonly" ng-value="'N'">检测报告
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="ifshowAduitonly" ng-model="reportParam.ifshowAduitonly" ng-value="'Y'">审计报告
+            </label>
+        </div>
+    </div>-->
+
+</div>

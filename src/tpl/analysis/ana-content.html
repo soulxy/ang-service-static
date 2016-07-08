@@ -1,0 +1,92 @@
+<div class="row">
+    <nav class="col-md-2 no-right-padding" ng-include="'app/views/analysis/ana-nav.html'"></nav>
+    <div class="col-md-10">
+        <div class="ana-wrapper panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">{{ pageInfo.title }}</h3>
+            </div>
+            <div class="ana-content panel-body">
+                <div class="form-inline">
+                    <div class="form-group time-selector" ng-if="shouldDisplay('beginTime') || shouldDisplay('endTime')">
+                        <label class="">统计时间：</label>
+                        <div class=" input-group">
+                            <input type="datetime" class="form-control" ng-model="condition.beginTime" format="short"  readonly
+                                    datepicker-popup="yyyy-MM-dd" is-open="formStatus.beginTimeIsOpen"
+                                   datepicker-options="dateOptions" min-date="minDate" max-date="maxDate"
+                                   ng-required="true" close-text="关闭" current-text="今天" clear-text="清空">
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="openBegin($event)"><i
+                                            class="glyphicon glyphicon-calendar"></i></button>
+                                     </span>
+                        </div>
+                        <label class=""> - </label>
+                        <div class=" input-group">
+                            <input type="datetime" class="form-control" ng-model="condition.endTime" format="short"  readonly
+                                    datepicker-popup="yyyy-MM-dd" is-open="formStatus.endTimeIsOpen"
+                                   datepicker-options="dateOptions" min-date="minDate" max-date="maxDate"
+                                   ng-required="true" close-text="关闭" current-text="今天" clear-text="清空">
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="openEnd($event)"><i
+                                            class="glyphicon glyphicon-calendar"></i></button>
+                                     </span>
+                        </div>
+                        <span class="rule-tip-font" ng-if="condition.endTime!=''&&condition.endTime<condition.beginTime">结束时间必须大于开始时间</span>
+                    </div>
+                </div>
+                <!--检测版不存在 默认自动检测-->
+                <input type="hidden" ng-model="condition.taskType" ng-init="condition.taskType=1">
+                <!--<div class="form-inline" ng-if="shouldDisplay('taskType')">
+                    <div class="form-group task-type-selector">
+                        <label>任务类型：</label>
+                        <select class="form-control" ng-model="condition.taskType" ng-options="tp.value as tp.name for tp in taskTypes">
+                        </select>
+                    </div>
+                </div>-->
+                <div class="form-inline" ng-if="shouldDisplay('languages')">
+                    <div class="form-group lang-selector" ng-init="noTpl='没有可用的检测引擎'">
+                        <label>开发语言：</label>
+                        <label class="checkbox-inline" ng-repeat="lg in languages">
+                            <input type="checkbox" ng-model="lg.selected" ng-click="updateLanguages()">{{ lg.value | langFilter }}
+                        </label>
+                        <label ng-if="nothingTpl" class="rule-tip-font ng-scope" ng-bind="noTpl"></label>
+                    </div>
+                </div>
+                <div class="form-inline" ng-if="shouldDisplay('auditStatus')">
+                    <div class="form-group auditStatus-selector">
+                        <label>审计状态：</label>
+                        <select class="form-control" ng-model="condition.auditStatus" ng-options="ast.value as ast.name for ast in auditStatus">
+                        </select>
+                    </div>
+                </div>
+                <div ng-if="shouldDisplay('orgs')">
+                    <div class="orgs-selector-title">选择部门：</div>
+                    <div class="orgs-selector">
+                        <ul tree  class="ztree" datas="depts" children="children" key="datapk" name="nodename" check="true"></ul>
+                    </div>
+                </div>
+                <div ng-if="shouldDisplay('projects')">
+                    <div class="projects-selector-title">选择项目：</div>
+                    <div class="projects-selector">
+                        <label class="checkbox-inline"  ng-repeat="project in projects">
+                            <input type="checkbox" ng-model="project.selected" ng-click="updateProjects()">{{ project.pjName }}
+                        </label>
+                    </div>
+                </div>
+                <div class="clear"></div>
+                <div class="ana-btn text-center">
+                    <a href="" ng-click="doAnalyze()" class="btn btn-success btn-md">开始统计</a>
+                </div>
+                <div class="ana-results" ng-if="showResult">
+                    <div ng-if="chartType==1" class="ana-chart-bar" chart-bar
+                         stack="'true'"
+                         data="anaData"
+                         custom-width="customWidth"></div>
+                    <div ng-if="chartType==2">
+                        <div chart-opt-bar option="option" height="height">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

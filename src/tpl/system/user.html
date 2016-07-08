@@ -1,0 +1,57 @@
+<div class="panel-heading">
+    <div class="input-group" style="width: 200px;float:left; margin-top: -4px;">
+        <input type="text" ng-model="condition" ng-keyup="search(condition)" class="form-control" placeholder="关键字">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" ng-click="search(condition)">查找</button>
+                    </span>
+    </div>
+    <div class="to-right" ng-if="hasPower('System_User_Add')"><a class="cursor_pointer txt-green" ng-click="addUser('添加用户')">+添加用户</a>
+    </div>
+</div>
+<div class="blank-line"></div>
+<table class="table table-hover line">
+    <thead>
+    <tr>
+        <th><input type="checkbox" ng-model="checkModel.checkall" my-check="checkModel.checkAll(usersToDisplay)"></th>
+        <th>用户名</th>
+        <th>上级领导</th>
+        <th>部门</th>
+        <th>角色</th>
+        <th>联系电话</th>
+        <th>电子邮件</th>
+        <th>描述信息</th>
+        <th class="th-left-line"><a class="txt-yellow" ng-click="removes()" ng-if="hasPower('System_User_Delete')"
+                                    ng-class="{disabled:!hasCheck(usersToDisplay)}">删除选中项</a></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="user in usersToDisplay" ng-class="{'info':user.highLight}">
+        <td>
+            <input type="checkbox" ng-model="user.checked" my-check="checkModel.check(user,usersToDisplay)"/>
+        </td>
+        <td>{{user.username}}</td>
+        <td>{{user.leaderName}}</td>
+        <td>{{user.orgName}}</td>
+        <td ng-bind="getRoles(user)"></td>
+        <td>{{user.phone}}</td>
+        <td>{{user.email}}</td>
+        <td>
+            <a popover-placement="bottom"
+               popover-trigger="mouseenter"
+               popover="{{user.remark}}">{{user.remark|cutFilter}}</a>
+        </td>
+        <td>
+            <a ng-click="updateUser('修改用户',user)" tooltip="{{user.isInit=='Y'?'系统内置用户不能修改':''}}" a-disabled="user.isInit=='Y'" ng-if="hasPower('System_User_Modify')">修改</a>
+            <a ng-click="resetPwd(user)" tooltip="{{user.isInit=='Y'?'系统内置用户不能修改':''}}" a-disabled="user.isInit=='Y'" ng-if="hasPower('System_User_ResetPwd')">重置密码</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div class="text-center">
+    <div local-pagination
+         raw-data="users"
+         display-data="usersToDisplay"
+         limit="15"
+         change="checkModel.unCheckAll(usersToDisplay)">
+    </div>
+</div>

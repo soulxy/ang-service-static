@@ -1,0 +1,52 @@
+<div class="form-horizontal safe-fun">
+    <div class="form-group">
+        <label class="control-label col-md-3">缺陷分类(一级) :</label>
+        <div class="col-md-9">
+            <select class="form-control" ng-init="OneInit();" ng-change="TwoInit(true);" ng-model="ruleObj.ruleType" ng-options="r.ruleType as r.ruleType for r in  selOptions.one" >
+
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-3">缺陷分类(二级) :</label>
+        <div class="col-md-9">
+            <select class="form-control" ng-init="TwoInit();" ng-model="safeFn.ruleVO" ng-options="r.ruleName for r in  selOptions.two track by r.pkRule"></select>
+        </div>
+    </div>
+    <div class="form-group" ng-show="false">
+        <label class="control-label col-md-3">缺陷分类(三级) :</label>
+        <div class="col-md-9">
+            <select class="form-control"></select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-3">{{safeFnModule[code.language].moduleName}} :</label>
+        <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="safeFn.packageName"  maxlength="50"  placeholder="样例:com.codesafe.package" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-3">类名 :</label>
+        <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="safeFn.className" maxlength="20" required placeholder="样例:className"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-3">方法名 :</label>
+        <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="safeFn.functionName" maxlength="20" required placeholder="样例:functionName"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-3">返回值 :</label>
+        <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="safeFn.returnValue"  required placeholder="样例:int"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-3">参数列表 :</label>
+        <div class="col-md-9">
+            <input type="text" class="form-control" ng-model="safeFn.paramList"  required placeholder="样例:int,int"/>
+        </div>
+    </div>
+</div>

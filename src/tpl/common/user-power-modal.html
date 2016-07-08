@@ -1,0 +1,26 @@
+<form>
+<div class="form-group">
+    <label class="radio-inline">
+        <input type="radio" name="inlineRadioOptions" ng-value="0" ng-model="param.power"> 仅自己
+    </label>
+    <label class="radio-inline">
+        <input type="radio" name="inlineRadioOptions"  ng-value="1" ng-model="param.power"> 指定人员
+    </label>
+    <label class="radio-inline">
+        <input type="radio" name="inlineRadioOptions"  ng-value="2" ng-model="param.power"> 全部
+    </label>
+</div>
+
+<!--<div ng-show="param.power==1" ivh-treeview="param.users"
+     ivh-treeview-id-attribute="'nodeid'"
+     ivh-treeview-label-attribute="'nodename'"
+     ivh-treeview-default-selected-state="false"
+
+     ivh-treeview-validate="true"
+
+     style="padding: 20px 0 60px 30px;height: 270px;overflow-y: auto;">
+</div>-->
+    <div style="max-height:250px;overflow-y: auto; " ng-show="param.power==1">
+        <ul tree  class="ztree" datas="param.users" children="children" key="datapk" name="nodename" check="true"></ul>
+    </div>
+</form>

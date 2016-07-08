@@ -1,0 +1,45 @@
+
+            <div class="panel-heading">
+                <div class="input-group" style="width: 200px;float:left; margin-top: -4px;">
+                    <input type="text" ng-model="condition" ng-keyup="search(condition)" class="form-control" placeholder="关键字">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" ng-click="search(condition)">查找</button>
+                    </span>
+                </div>
+                <div class="to-right" ng-if="hasPower('System_Role_Add')"><a class="cursor_pointer txt-green" ng-click="addRole('添加角色')" >+添加角色</a>
+                </div>
+            </div>
+            <div class="blank-line"></div>
+            <table class="table table-hover line">
+                <thead>
+                <tr>
+                    <th><input type="checkbox"   ng-model="checkModel.checkall" my-check="checkModel.checkAll(rolesToDisplay)"></th>
+                    <th>角色名称</th>
+                    <th>描述信息</th>
+                    <th class="th-left-line"><a class="txt-yellow" ng-if="hasPower('System_Role_Delete')" ng-click="removes()" ng-class="{disabled:!hasCheck(rolesToDisplay)}">删除选中项</a></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="role in rolesToDisplay">
+                    <td><input type="checkbox" ng-model="role.checked" my-check="checkModel.check(role,rolesToDisplay)" /></td>
+                    <td>{{role.roleName}}</td>
+                    <td>
+                        <a popover-placement="bottom"
+                           popover-trigger="mouseenter"
+                           popover="{{role.roleDesc}}">{{role.roleDesc|cutFilter}}</a>
+                    </td>
+                    <td>
+                        <a ng-click="updateRole('修改角色',role)"  tooltip="{{role.isAdmin=='Y'?'系统内置角色不能修改':''}}"
+                           a-disabled="role.isAdmin=='Y'" ng-if="hasPower('System_Role_Modify')">修改</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="text-center">
+                <div local-pagination
+                     raw-data="roles"
+                     display-data="rolesToDisplay"
+                     limit="15"
+                     change="checkModel.unCheckAll(rolesToDisplay)"   >
+                </div>
+            </div>

@@ -1,0 +1,26 @@
+<div class="sys-nav">
+<div ui-tree="options" class="angular-ui-tree" ng-controller="sysNavCtrl" >
+    <ol ui-tree-nodes="" ng-model="list"  class="angular-ui-tree-nodes"  data-nodrag>
+        <li ng-repeat="node in list" ui-tree-node=""  class="angular-ui-tree-node" collapsed="!isOpen(node)" ng-if="!node.hide">
+            <div ui-tree-handle class="tree-node" ng-class="'nav-title-active cursor_pointer'" ng-click="toggle(this)">
+                <a class="" ng-if="node.nodes && node.nodes.length > 0" >
+                    <span  class="glyphicon"  ng-class="{ 'glyphicon-chevron-right': collapsed,'glyphicon-chevron-down': !collapsed}"></span>
+                </a>
+                {{node.title}}
+            </div>
+            <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}">
+                <li ng-repeat="node in node.nodes" ui-tree-node ng-if="!node.hide">
+                    <div ui-tree-handle class="tree-node tree-node-content">
+                     <a ng-href="{{node.url}}"  ng-class="{active: isActive(node.url)}">{{node.title}}</a>
+                    </div>
+                </li>
+            </ol>
+        </li>
+    </ol>
+</div>
+</div>
+<div class="sys-wrapper">
+    <div class="sys-content">
+        <div data-ui-view=""></div>
+    </div>
+</div>

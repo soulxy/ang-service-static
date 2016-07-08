@@ -1,0 +1,122 @@
+<div>
+    <div class="content">
+        <div ng-show="!action_add">
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading">报告管理
+                    <div class="right cursor_pointer" ng-click="action_search=!action_search"><i class="glyphicon"
+                                                                                    ng-class="action_search?'glyphicon-arrow-up':'glyphicon-arrow-down'"></i>查询
+                    </div>
+                </div>
+                <div class="panel-body" ng-show="action_search">
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <label>报告名称:</label>
+                            <input type="text" class="form-control" ng-model="condition.reportName" maxlength="20">
+                        </div>
+                        <div class="form-group">
+                            <label>创建者:</label>
+                            <input type="text" class="form-control" ng-model="condition.userName">
+                        </div>
+                        <div class="form-group">
+                            <label>报告状态:</label>
+                            <select class="form-control" ng-model="condition.reportStatus">
+                                <option value="-1">全部</option>
+                                <option value="0">成功</option>
+                                <option value="1">失败</option>
+                                <option value="2">进行中</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>报告格式:</label>
+                            <select class="form-control" ng-model="condition.extension">
+                                <option value="-1">全部</option>
+                                <option value="0">Word</option>
+                                <option value="2">Excel</option>
+                                <option value="1">PDF</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-inline">
+                        <div class="form-group form-width">
+                            <label for="start-time-filter">导出时间:</label>
+                            <div class="input-group">
+                                <input type="datetime" class="form-control" ng-model="condition.stime"   readonly
+                                       id="start-time-filter" datepicker-popup="yyyy-MM-dd" is-open="condition.fromOpened"
+                                       datepicker-options="dateOptions" min-date="minDate" max-date="maxDate"
+                                       close-text="关闭" current-text="今天" clear-text="清空">
+                            <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="openFrom($event)"><i
+                                    class="glyphicon glyphicon-calendar"></i></button>
+                             </span>
+                            </div>
+                            -
+                            <div class="input-group">
+                                <input type="datetime" class="form-control" ng-model="condition.etime"  readonly
+                                       datepicker-popup="yyyy-MM-dd" is-open="condition.endOpened"
+                                       datepicker-options="dateOptions" min-date="minDate" max-date="maxDate"
+                                       close-text="关闭" current-text="今天" clear-text="清空">
+                            <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="openEnd($event)"><i
+                                    class="glyphicon glyphicon-calendar"></i></button>
+                             </span>
+                            </div>
+                            <span class="rule-tip-font" ng-if="condition.etime!=''&&condition.stime!=''&&condition.etime<condition.stime">结束时间必须大于开始时间</span>
+
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button class="btn btn-blue" ng-click="search()" ng-disabled="condition.etime!=''&&condition.stime!=''&&condition.etime<condition.stime">查询</button>
+                        <button class="btn btn-orange" ng-click="clearCondition();">清除查询条件</button>
+                        <button class="btn btn-gray" ng-show="false">高级查询</button>
+                    </div>
+                </div>
+                <!-- Table -->
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th><input type="checkbox"  ng-model="checkModel.checkall" my-check="checkModel.checkAll(reportsToDisplay)"></th>
+                        <th>报告名称</th>
+                        <th>导出时间</th>
+                        <th>源码名称</th>
+                        <th>报告格式</th>
+                        <th>状态</th>
+                        <th>创建者</th>
+                        <th class="th-left-line">
+                            <a class="txt-yellow" ng-click="load()">刷新</a>
+                            <span style="width:80px;"></span>
+                            <a class="txt-yellow" ng-if="hasPower('Report_Del')" ng-click="removes()" ng-class="{disabled:!hasCheck(reportsToDisplay)}">删除选中项</a></th>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                   <!-- <tr ng-repeat="report in reports|reportFilter:condition">-->
+                    <tr ng-repeat="report in  reportsToDisplay">
+                        <td scope="row"><input type="checkbox" ng-model="report.checked" my-check="checkModel.check(report,reportsToDisplay)" /></td>
+                        <td>{{report.reportName}}</td>
+                        <td>{{report.exportTime}}</td>
+                        <td>{{report.codeName}}</td>
+                       <!-- <td>{{report.checkType|checkFilter}}</td>-->
+                        <td>{{report.extension|reportFormat}}</td>
+                        <td><span class="report-status{{report.reportStatus}}">{{report.reportStatus|reportStatusFilter}}</span></td>
+                        <td>{{report.userName}}</td>
+                        <td>
+                            <a  ng-click="download(report.pkReport)" ng-if="hasPower('Report_Download')" a-disabled="report.reportStatus!=0">下载</a>
+                            <span style="width:50px;"></span>
+                            <a ng-click="sendMail(report)" ng-if="hasPower('Report_Mail')" a-disabled="report.reportStatus!=0">发邮件</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="text-center">
+                    <div local-pagination
+                         raw-data="reports"
+                         display-data="reportsToDisplay"
+                         limit="15"
+                         change="checkModel.unCheckAll(reportsToDisplay)"   >
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

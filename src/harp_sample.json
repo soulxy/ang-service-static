@@ -1,0 +1,12 @@
+{
+  "globals": {
+    "env": {
+      "development": {
+        "host": "127.0.0.1:9966"
+      },
+      "production": {
+        "host": ""
+      }
+    }
+  }
+}

@@ -1,0 +1,139 @@
+    <tabset>
+        <tab heading="基本信息">
+            <div class="form-horizontal tab-box"   novalidate>
+                <div class="form-group">
+                    <label  class="col-md-2 control-label">用户名称:</label>
+                    <div class="col-md-9" >
+                         <input type="text" name="username" class="form-control" ng-model="user.username" placeholder="请输入用户名" maxlength="30" required
+                                                             tooltip="{{modalForm.username.$invalid?'用户名不能为空':''}}" tooltip-placement="bottom" />
+
+
+                    </div>
+                    <span class="col-md-1 require-remark">*</span>
+                </div>
+                <div class="form-group">
+                    <label  class="col-md-2 control-label">密码:</label>
+                    <div class="col-md-9">
+                        <input type="password" name="pwd" class="form-control" ng-model="user.password"
+                               verify-config="verifyConfig" placeholder="请输入密码" maxlength="100" required
+                               tooltip="{{modalForm.pwd.$invalid?'至少6位且包含字母和数字':''}}" tooltip-placement="bottom" />
+                    </div>
+                    <span class="col-md-1 require-remark">*</span>
+                </div>
+                <div class="form-group">
+                    <label  class="col-md-2 control-label">确认密码:</label>
+                    <div class="col-md-9">
+
+                        <input type="password" name="confirmPwd" class="form-control"  ng-model="samePwd" compare-to="user.password"  placeholder="请输入确认密码" required
+                               tooltip="{{modalForm.confirmPwd.$invalid?'密码要一致且不能为空':''}}" tooltip-placement="bottom"/>
+                    </div>
+                    <span class="col-md-1 require-remark">*</span>
+                </div>
+                <div class="form-group">
+                    <label  class="col-md-2 control-label">联系电话:</label>
+                    <div class="col-md-9">
+                        <input type="tel " name="phone" class="form-control" ng-model="user.phone" placeholder="请输入手机号" maxlength="11"
+                               tooltip="{{modalForm.phone.$invalid?'手机号格式不正确':''}}" tooltip-placement="bottom"
+                                />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label  class="col-md-2 control-label">电子邮件:</label>
+                    <div class="col-md-9">
+                        <input type="email" name="" class="form-control" ng-model="user.email" placeholder="sample@360.com" maxlength="50"
+                               tooltip="{{modalForm.confirmPwd.$invalid?'邮件格式不正确':''}}" tooltip-placement="bottom"
+                                />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label  class="col-md-2 control-label">上级领导:</label>
+                    <div class="col-md-9">
+                        <selecttree id="userTree" datas="allUser"  maxheight="250" value="parentUserNode" children="children" key="datapk" name="nodename" onlyleaf="true" validation="parentUserNode.validation"></selecttree>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label  class="col-md-2 control-label">部门:</label>
+                    <div class="col-md-9">
+                        <selecttree id="orgTree" datas="depts"  maxheight="250" value="orgNode" children="children" key="datapk" name="nodename" required="true" onlyleaf="true"></selecttree>
+
+                    </div>
+                    <span class="col-md-1 require-remark">*</span>
+                </div>
+                <div class="form-group">
+                    <label  class="col-md-2 control-label">角色:</label>
+                    <div class="col-md-9">
+                        <div ng-repeat="roleGroup in roleGroups">
+                            <label class="checkbox-inline" style="width: 100px;" ng-repeat="role in roleGroup">
+                                <input type="checkbox" ng-model="role.checked">
+                                <label popover-placement="top" ng-if="role.roleName.length>4"
+                                       popover-trigger="mouseenter"
+                                       popover="{{role.roleName}}">{{role.roleName|cutFilter:4}}</label>
+                                <label  ng-if="role.roleName.length<=4">{{role.roleName}}</label>
+                            </label>
+                        </div>
+                    </div>
+                    <span class="col-md-1 require-remark">*</span>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">描述信息:</label>
+                    <div class="col-md-9">
+                        <textarea class="form-control" ng-model="user.remark" maxlength="100" placeholder="请输入描述信息"></textarea>
+
+                    </div>
+                </div>
+            </div>
+        </tab>
+        <!--检测板没有仓库概念-->
+        <!--<tab heading="关联代码仓库">
+            <div class="form-horizontal tab-box"  novalidate>
+                <div class="form-group padding-left-20">
+                    <a  tooltip="添加仓库" tooltip-placement="bottom" data-ng-click="addRepos()"><i class="glyphicon glyphicon-plus-sign"></i></a>
+                </div>
+                <div data-ng-repeat="repos in user.svnGits" class="group-box">
+                    <div class="form-group">
+                        <label  class="col-md-2 control-label">代码仓库:</label>
+                        <div class="col-md-8">
+                            <label class="radio-inline">
+                                <input type="radio"  ng-model="repos.platformType" ng-value="1">Svn
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio"  ng-model="repos.platformType" ng-value="2">Git
+                            </label>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label  class="col-md-2 control-label">用户名:</label>
+                        <div class="col-md-9">
+                            <input type="text" name="svngitUserName" ng-model="repos.svngitUserName" class="form-control" required
+                                   tooltip="{{modalForm.svngitUserName.$invalid?'仓库用户名不能为空':''}}">
+                        </div>
+                        <span class="col-md-1 require-remark">*</span>
+                    </div>
+                    <div class="form-group">
+                        <label  class="col-md-2 control-label">仓库地址:</label>
+                        <div class="col-md-9">
+                            <input type="url" name="svngitUrl" ng-model="repos.svngitUrl" class="form-control" required
+                                   tooltip="{{modalForm.svngitUrl.$invalid?'仓库地址格式不正确':''}}">
+
+                        </div>
+                        <span class="col-md-1 require-remark">*</span>
+                    </div>
+                    <div class="remove">
+                        <a  tooltip="删除" tooltip-placement="left" data-ng-click="removeRepos(repos)"><i class="glyphicon glyphicon-minus-sign"></i></a>
+                    </div>
+                    <div class="form-group" style="margin-top: 20px; text-align: right;">
+
+                    </div>
+                </div>
+            </div>
+        </tab>-->
+    </tabset>
+
+
+
+
+
+
+
+

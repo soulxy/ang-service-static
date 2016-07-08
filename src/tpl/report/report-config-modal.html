@@ -1,0 +1,102 @@
+<div class="form-horizontal get-report">
+    <div class="form-group">
+        <label class="col-md-2 control-label">报告名称:</label>
+        <div class="col-md-10">
+            <input type="text" class="form-control" name="rpName" ng-model="reportParam.rpName" maxlength="20" required placeholder="输入报告名称">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">报告格式:</label>
+        <div class="col-md-10">
+            <label class="radio-inline">
+                <input type="radio" name="format" ng-model="reportParam.format" ng-value="0" ng-change="reportParam.ifOnlySum='Y';reportParam.ifTrace='N';reportParam.ifAdv='N'">Word
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="format" ng-model="reportParam.format" ng-value="2" ng-change="reportParam.ifOnlySum='N';reportParam.ifTrace='Y';reportParam.ifAdv='Y'">Excel
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="format" ng-model="reportParam.format" ng-value="1" ng-change="reportParam.ifOnlySum='Y';reportParam.ifTrace='N';reportParam.ifAdv='N'">PDF
+            </label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">报告类型:</label>
+        <div class="col-md-10">
+                <label class="radio-inline">
+                    <input type="radio" name="ifOnlySum" ng-model="reportParam.ifOnlySum" ng-value="'Y'"
+                           ng-change="reportParam.ifTrace='N';reportParam.ifAdv='N'"
+                           ng-disabled="reportParam.format=='2'">概要报告
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="ifOnlySum" ng-init="reportParam.ifOnlySum=='N'" ng-model="reportParam.ifOnlySum"  ng-value="'N'"
+                           ng-change="reportParam.ifTrace='Y';reportParam.ifAdv='Y'"
+                           ng-disabled="reportParam.format=='2'">详细报告
+                </label>
+
+        </div>
+    </div>
+<!--    <div class="form-group">
+        <label class="col-md-3 control-label">报告类型:</label>
+        <div class="col-md-9">
+            <label class="radio-inline">
+                <input type="radio" name="ifshowAduitonly" ng-model="reportParam.ifshowAduitonly" ng-value="'N'">检测报告
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="ifshowAduitonly" ng-model="reportParam.ifshowAduitonly" ng-value="'Y'">审计报告
+            </label>
+        </div>
+    </div>-->
+    <div class="form-group">
+
+        <label class="col-md-2 control-label">缺陷等级:</label>
+        <div class="col-md-10">
+            <label class="checkbox-inline">
+                <input type="checkbox" name="priority1show" ng-model="reportParam.pHighShow" ng-true-value="'Y'" ng-false-value="'N'">高
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" name="priority2show" ng-model="reportParam.pMidShow" ng-true-value="'Y'"  ng-false-value="'N'">中
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" name="priority3show" ng-model="reportParam.pLowShow" ng-true-value="'Y'"  ng-false-value="'N'">低
+            </label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">缺陷类型:</label>
+        <div class="col-md-10">
+            <div style="max-height:230px;overflow-y: auto; overflow-x:hidden ">
+                <ul tree id="bugTypeTree" class="ztree" datas="bugTypes" children="sons" key="ruleCode" name="typeName" check="true" self-checked="true" default-checked="true"></ul>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">跟踪路径:</label>
+        <div class="col-md-10" >
+            <label class="radio-inline">
+                <input type="radio" name="ifTrace" ng-model="reportParam.ifTrace" ng-value="'Y'" ng-disabled="reportParam.ifOnlySum==='Y'">是
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="ifTrace" ng-model="reportParam.ifTrace" ng-value="'N'" ng-disabled="reportParam.ifOnlySum==='Y'">否
+            </label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">修复建议:</label>
+        <div class="col-md-10">
+            <label class="radio-inline">
+                <input type="radio" name="ifAdv" ng-model="reportParam.ifAdv" ng-value="'Y'" ng-disabled="reportParam.ifOnlySum==='Y'">是
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="ifAdv" ng-model="reportParam.ifAdv" ng-value="'N'" ng-disabled="reportParam.ifOnlySum==='Y'">否
+            </label>
+        </div>
+    </div>
+ <!--   <div class="form-group">
+        <label class="col-md-3 control-label">其他参数:</label>
+        <div class="col-md-9">
+            <label class="checkbox-inline">
+                <input type="checkbox" name="levelFirst" ng-model="reportParam.levelFirst"   ng-true-value="'Y'" ng-false-value="'N'">等级优先
+            </label>
+        </div>
+    </div>-->
+</div>

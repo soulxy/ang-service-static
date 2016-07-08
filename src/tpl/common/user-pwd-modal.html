@@ -1,0 +1,24 @@
+<div class="form-horizontal" novalidate>
+    <div class="form-group">
+        <label class="col-md-2 control-label">旧密码:</label>
+        <div class="col-md-10">
+            <input type="password" class="form-control" ng-model="user.oldPassword"  required/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">新密码:</label>
+        <div class="col-md-10">
+            <input type="password" name="pwd" class="form-control" ng-model="user.newPassword" verify-config="verifyConfig"
+                   tooltip="{{modalForm.pwd.$invalid?'至少6位且包含字母和数字':''}}" maxlength="50" tooltip-placement="bottom"
+                   required/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">确认密码:</label>
+        <div class="col-md-10">
+            <input type="password" name="confirmPwd" class="form-control" ng-model="samePwd" compare-to="user.newPassword"
+                   tooltip="{{modalForm.confirmPwd.$invalid?'密码要一致且不能为空':''}}" tooltip-placement="bottom"
+                   required/>
+        </div>
+    </div>
+</div>

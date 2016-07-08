@@ -1,0 +1,199 @@
+<div class="row">
+    <div class="col-md-6">
+        <div class="board-col-box font-span-padding">
+            <div>
+                <span class="border-left font-bold">任务基本信息</span>
+                <div class="padding10">
+                    <div class="row">
+                        <div class="col-md-6"><span>任务名称:</span><span class="font-bold-mid font-blue">{{checkResult.taskVO.codeName}}</span></div>
+                        <div class="col-md-6"><span>开发语言:</span><span class="font-bold-mid font-blue">{{checkResult.taskVO.language|langFilter}}</span></div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-md-6"><span>任务类型:</span><span class="font-bold-mid font-blue">{{checkResult.taskType|taskFormat}}</span></div>
+                        <div class="col-md-6"><span>检测方式:</span><span class="font-bold-mid font-blue">{{checkResult.checkType|checkFilter}}</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="line"></div>
+            <div>
+                <span class="border-left font-bold">源代码统计信息</span>
+                <!--<div class="padding10">
+                    <div class="row">
+                        <div class="col-md-6"><span class="font-bold">源代码包大小</span>
+                            <p>
+                                <span class="font-bold font-blue" ng-bind-html="checkResult.zipSize|sizeFormat"></span>
+                            </p>
+                        </div>
+                        <div class="col-md-6"><span class="font-bold">文件数</span>
+                            <p>
+                                <span class="font-bold font-blue" ng-bind-html="checkResult.fileNum|countFormat"></span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">总行数<p class="font-blue" ng-bind-html="checkResult.rowNum|rowCountFormat"></p></div>
+                        <div class="col-md-3">代码行<p ng-bind-html="checkResult.codeRownum|rowCountFormat"></p></div>
+                        <div class="col-md-3">注释行<p ng-bind-html="checkResult.commentRownum|rowCountFormat"></p></div>
+                        <div class="col-md-3">空白行<p ng-bind-html="checkResult.blankRownum|rowCountFormat"></p></div>
+                    </div>
+                </div>-->
+                <div class="padding10">
+                    <div class="row">
+                        <div class="col-md-6"><span>包大小:</span> <span class="font-bold-mid font-blue" ng-bind-html="checkResult.zipSize|sizeFormat"></span></div>
+                        <div class="col-md-6"><span>文件数:</span> <span class="font-bold-mid font-blue" ng-bind-html="checkResult.fileNum|countFormat"></span></div>
+                    </div>
+                   <br/>
+                    <div class="row">
+                        <div class="col-md-6"><span>总行数:</span><span class="font-bold-mid font-blue" ng-bind-html="checkResult.rowNum|rowCountFormat"></span></div>
+                        <div class="col-md-6"><span>代码行:</span><span class="font-bold-mid font-blue" ng-bind-html="checkResult.codeRownum|rowCountFormat"></span></div>
+                    </div>
+                  <br/>
+                    <div class="row">
+                        <div class="col-md-6"><span>注释行:</span><span class="font-bold-mid font-blue" ng-bind-html="checkResult.commentRownum|rowCountFormat"></span></div>
+                        <div class="col-md-6"><span>空白行:</span><span class="font-bold-mid font-blue" ng-bind-html="checkResult.blankRownum|rowCountFormat"></span></div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="line"></div>
+            <div>
+                <span class="border-left font-bold">源代码类型信息</span>
+
+                <div class="padding10">
+                    <div class="row">
+                        <div class="col-md-3" ng-repeat="item in checkResult.fileTypeAndNum">.{{item.key}}<p ng-bind-html="item.value|rowCountFormat"></p></div>
+                       <!-- <div class="col-md-3">.java<p>8562</p></div>
+                        <div class="col-md-3">.jsp<p>8562</p></div>
+                        <div class="col-md-3">.xml<p>8562</p></div>
+                        <div class="col-md-3">.html<p>8562</p></div>-->
+                    </div>
+                </div>
+            </div>
+            <div class="line" ng-show="false"></div>
+            <div ng-show="false">
+                <span class="border-left font-bold">源代码重复度</span> <span class="font-bold-mid font-blue">20%</span>
+
+                <div class="padding10">
+                    <div class="row">
+                        <div class="col-md-4">行数<p>{{checkResult.codeRownum}}</p></div>
+                        <div class="col-md-4">代码块<p>8562</p></div>
+                        <div class="col-md-4">文件数<p>{{checkResult.fileNum}}</p></div>
+                    </div>
+                </div>
+            </div>
+            <div class="line" ng-show="false"></div>
+            <div ng-show="false">
+                <span class="border-left font-bold">源代码复杂度</span> <span class="font-bold-mid font-blue">20%</span>
+
+                <div class="padding10">
+                    <div class="row">
+                        <div class="col-md-4">函数<p>{{checkResult.blankRownum}}</p></div>
+                        <div class="col-md-4">类<p>{{checkResult.funcNum}}</p></div>
+                        <div class="col-md-4">文件<p>{{checkResult.fileNum}}</p></div>
+                    </div>
+                    <div class="row">
+                        <div id="bar-chart" style="height: 250px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="board-col-box font-span-padding">
+            <div>
+                <span class="border-left font-bold">{{checkResult.checkType|checkShortFilter}}总数</span>
+                <div class="padding10">
+                   <div class="row" ng-switch="checkResult.taskType">
+                       <div class="col-md-12" ng-switch-when="0" >
+                            <span data-ng-switch="checkResult.checkType" ng-if="hasPower('QuickCheck_Audit')">
+                                 <a data-ng-switch-when="0"  href="#/audit/{{checkResult.taskId}}/{{checkResult.taskType}}">
+                                     <span class="font-bold font-blue" ng-bind-html="checkResult.problemNum|countFormatU:true"></span>
+                                 </a>
+                                 <a data-ng-switch-when="1"  href="#/audit-hg/{{checkResult.taskId}}/{{checkResult.taskType}}">
+                                     <span class="font-bold font-blue" ng-bind-html="checkResult.problemNum|countFormatU:true"></span>
+                                 </a>
+                                 <a data-ng-switch-when="2"  href="#/audit-sy/{{checkResult.taskId}}/{{checkResult.taskType}}">
+                                     <span class="font-bold font-blue" ng-bind-html="checkResult.problemNum|countFormatU:true"></span>
+                                 </a>
+                            </span>
+                            <span data-ng-switch="checkResult.checkType" ng-if="!hasPower('QuickCheck_Audit')">
+                                  <span ng-switch-when="0" class="font-bold font-blue" ng-bind-html="checkResult.problemNum|countFormatU:false"></span>
+                                  <span ng-switch-when="1" class="font-bold font-blue" ng-bind-html="checkResult.problemNum|countFormatU:false"></span>
+                                  <span ng-switch-when="2" class="font-bold font-blue" ng-bind-html="checkResult.problemNum|countFormatU:false"></span>
+
+                            </span>
+                       </div>
+
+                       <div class="col-md-12" ng-switch-when="1" >
+                            <span data-ng-switch="checkResult.checkType" ng-if="hasPower('ProjectCheck_Audit')">
+                                 <a data-ng-switch-when="0"  href="#/audit/{{checkResult.taskId}}/{{checkResult.taskType}}">
+                                     <span class="font-bold font-blue" ng-bind-html="checkResult.problemNum|countFormatU:true"></span>
+                                 </a>
+                                 <a data-ng-switch-when="1"  href="#/audit-hg/{{checkResult.taskId}}/{{checkResult.taskType}}">
+                                     <span class="font-bold font-blue" ng-bind-html="checkResult.problemNum|countFormatU:true"></span>
+                                 </a>
+                                 <a data-ng-switch-when="2"  href="#/audit-sy/{{checkResult.taskId}}/{{checkResult.taskType}}">
+                                     <span class="font-bold font-blue" ng-bind-html="checkResult.problemNum|countFormatU:true"></span>
+                                 </a>
+                            </span>
+                            <span data-ng-switch="checkResult.checkType" ng-if="!hasPower('ProjectCheck_Audit')">
+                                  <span ng-switch-when="0" class="font-bold font-blue" ng-bind-html="checkResult.problemNum|countFormatU:false"></span>
+                                  <span ng-switch-when="1" class="font-bold font-blue" ng-bind-html="checkResult.problemNum|countFormatU:false"></span>
+                                  <span ng-switch-when="2" class="font-bold font-blue" ng-bind-html="checkResult.problemNum|countFormatU:false"></span>
+
+                            </span>
+                       </div>
+                       <div class="col-md-12" ng-switch-when="2" >
+                            <span data-ng-switch="checkResult.checkType" ng-if="hasPower('ProjectCheck_Audit')">
+                                 <a data-ng-switch-when="0"  href="#/audit/{{checkResult.taskId}}/{{checkResult.taskType}}">
+                                     <span class="font-bold font-blue" ng-bind-html="checkResult.problemNum|countFormatU:true"></span>
+                                 </a>
+                                 <a data-ng-switch-when="1"  href="#/audit-hg/{{checkResult.taskId}}/{{checkResult.taskType}}">
+                                     <span class="font-bold font-blue" ng-bind-html="checkResult.problemNum|countFormatU:true"></span>
+                                 </a>
+                                 <a data-ng-switch-when="2"  href="#/audit-sy/{{checkResult.taskId}}/{{checkResult.taskType}}">
+                                     <span class="font-bold font-blue" ng-bind-html="checkResult.problemNum|countFormatU:true"></span>
+                                 </a>
+                            </span>
+                            <span data-ng-switch="checkResult.checkType" ng-if="!hasPower('ProjectCheck_Audit')">
+                                  <span ng-switch-when="0" class="font-bold font-blue" ng-bind-html="checkResult.problemNum|countFormatU:false"></span>
+                                  <span ng-switch-when="1" class="font-bold font-blue" ng-bind-html="checkResult.problemNum|countFormatU:false"></span>
+                                  <span ng-switch-when="2" class="font-bold font-blue" ng-bind-html="checkResult.problemNum|countFormatU:false"></span>
+
+                            </span>
+                       </div>
+                   </div>
+                </div>
+            </div>
+            <div class="line"></div>
+            <div>
+                <span class="border-left font-bold">{{checkResult.checkType|checkShortFilter}}等级统计</span>
+                <div class="padding10">
+                    <div class="row">
+                        <div class="col-md-4">高<p ng-bind-html="checkResult.problemNum5|countFormat"></p></div>
+                        <div class="col-md-4">中<p ng-bind-html="checkResult.problemNum3|countFormat"></p></div>
+                        <div class="col-md-4">低<p ng-bind-html="checkResult.problemNum1|countFormat"></p></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="grade-chart" style="height: 300px;"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="line" ng-if="checkResult.checkType!=2"></div>
+            <div ng-if="checkResult.checkType!=2">
+                <span class="border-left font-bold">{{checkResult.checkType|checkShortFilter}}分类统计</span>
+                <div class="padding10">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="category-chart" ng-style="{height:categoryChardHeight+'px'}"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,22 @@
+   <div>
+    <script type="text/ng-template" id="tree-node.html">
+        <div ui-tree-handle class="tree-node tree-node-content">
+            <a class=""  ng-click="toggle(this)">
+                <span ng-if="node.nodes && node.nodes.length > 0" class="glyphicon"  ng-class="{ 'glyphicon-chevron-right': collapsed,'glyphicon-chevron-down': !collapsed}"></span>
+            </a>
+            <input type="checkbox" ng-model="node.checked" value="{{node.value}}" ng-change="change(this)">{{node.name}}
+        </div>
+        <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}" style="padding-left:30px;">
+            <li ng-repeat="node in node.nodes" ui-tree-node ng-include="'tree-node.html'">
+            </li>
+        </ol>
+    </script>
+
+    <div ui-tree="options" class="ng-scope angular-ui-tree" style="max-height: 250px;overflow-y: auto;">
+        <ol ui-tree-nodes="" ng-model="list" class="ng-scope ng-pristine ng-valid angular-ui-tree-nodes" data-nodrag>
+            <li ng-repeat="node in list" ui-tree-node="" ng-include="'tree-node.html'" class="ng-scope angular-ui-tree-node" collapsed="true"> </li>
+        </ol>
+    </div>
+   </div>
+   <!--ng-if="node.nodes && node.nodes.length > 0"-->
+

@@ -1,0 +1,120 @@
+<div class="form-horizontal" novalidate>
+    <div ng-show="!commitShow">
+    <div class="form-group">
+        <label class="col-md-3 control-label">跟踪系统地址:</label>
+
+        <div class="col-md-9">
+            <input type="text" class="form-control" placeholder="请先配置缺陷跟踪系统" ng-model="commitInfo.url" required readonly/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-3 control-label">用户名:</label>
+
+        <div class="col-md-9">
+            <input type="text " class="form-control" ng-model="commitInfo.userName"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-3 control-label">密码:</label>
+
+        <div class="col-md-9">
+            <input type="password"  class="form-control" ng-model="commitInfo.pwd" required/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-3 control-label">审计状态:</label>
+
+        <div class="col-md-9">
+            <label class="checkbox-inline">
+                <input type="checkbox"  ng-model="commitInfo.auditStatus.high" ng-true-value="'Y'" ng-false-value="'N'">高
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox"  ng-model="commitInfo.auditStatus.middle" ng-true-value="'Y'" ng-false-value="'N'">中
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox"  ng-model="commitInfo.auditStatus.low" ng-true-value="'Y'" ng-false-value="'N'">低
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox"  ng-model="commitInfo.auditStatus.noaduit" ng-true-value="'Y'" ng-false-value="'N'">未审计
+            </label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-3 control-label">缺陷分类:</label>
+
+        <div class="col-md-9">
+            <div style="max-height:250px;overflow-y: auto; overflow-x:hidden ">
+                <ul tree id="bugTypeTree" class="ztree" datas="commitInfo.bugTypes" children="sons" name="typeName" key="ruleCode" check="true" self-checked="true"></ul>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-10">
+
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-green" data-ng-click="commitShow=true;selectBugs()" > 下一步</button>
+        </div>
+    </div>
+    </div>
+    <div ng-show="commitShow">
+        <div class="form-group">
+            <div class="col-md-3"> </div>
+            <div class="col-md-9">
+                <label ng-show="commitInfo.bugNum>0">共有<span class="txt-green">{{commitInfo.bugNum}}</span>个bug符合批量提交条件</label>
+                <label ng-show="commitInfo.bugNum==0">没有符合条件的bug</label>
+            </div>
+        </div>
+        <div ng-show="commitInfo.bugNum>0">
+            <div class="form-group">
+                <label class="col-md-3 control-label">product:</label>
+
+                <div class="col-md-9">
+                    <input type="text"  class="form-control" ng-model="commitInfo.product" required/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">component:</label>
+
+                <div class="col-md-9">
+                    <input type="text " class="form-control" ng-model="commitInfo.component"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">version:</label>
+
+                <div class="col-md-9">
+                    <input type="text " class="form-control" ng-model="commitInfo.version"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">assignee:</label>
+
+                <div class="col-md-9">
+                    <input type="text"  class="form-control" ng-model="commitInfo.assignee" required/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">priority:</label>
+
+                <div class="col-md-9">
+                    <select class="form-control" ng-model="commitInfo.priority">
+                        <option value="Highest">Highest</option>
+                        <option value="High">High</option>
+                        <option value="Low">Low</option>
+                        <option value="Normal">Normal</option>
+                        <option value="Lowest">Lowest</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-green" data-ng-click="commitShow=false"> 上一步</button>
+            </div>
+        </div>
+    </div>
+</div>

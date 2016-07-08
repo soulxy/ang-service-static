@@ -1,0 +1,213 @@
+<form name="checkForm" novalidate>
+    <div class="panel panel-default">
+        <!-- Default panel contents -->
+
+        <div class="panel-heading">配置信息</div>
+        <div class="panel-body">
+            <div class="form-inline">
+                <div class="form-group">
+                    <label>源码名称:</label>
+                    <input type="text" name="codename" class="form-control" ng-model="code.codeName" maxlength="20" placeholder="请输入源代码名称" required/>
+                    <label class="rule-tip-font">*最大长度不超过20个字符</label>
+                </div>
+
+            </div>
+            <div class="form-inline">
+                <div class="form-group">
+                    <label>开发语言:</label>
+
+                    <label ng-if="langs.length==0" class="rule-tip-font">没有可用的检测引擎</label>
+                    <label class="radio-inline" data-ng-repeat="lang in langs">
+                        <input type="radio" name="code_lang" ng-model="code.language" value="{{lang.lang}}" ng-change="changeLang()">{{lang.lang|langFilter}}
+                    </label>
+
+                  <!--  <label class="radio-inline">
+                        <input type="radio" name="code_lang" ng-model="code.language" value="1" ng-change="changeLang()">C/C++
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="code_lang" ng-model="code.language" value="2" ng-change="changeLang()"> C#
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="code_lang" ng-model="code.language" value="0" ng-change="changeLang()">Java
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="code_lang" ng-model="code.language" value="4" ng-change="changeLang()"> PHP
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="code_lang" ng-model="code.language" value="3" ng-change="changeLang()"> Python
+                    </label>-->
+
+                </div>
+
+            </div>
+            <div class="form-inline">
+                <div class="form-group" ng-if="code.language==0">
+                    <label>JDK版本:</label>
+                    <select class="form-control" ng-model="code.jdkVersion">
+                        <option value="4">JDK1.8</option>
+                        <option value="0">JDK1.7</option>
+                        <option value="1">JDK1.6</option>
+                        <option value="2">JDK1.5</option>
+                        <option value="3">JDK1.4</option>
+                    </select>
+                </div>
+                <div class="form-group" ng-if="code.language==0">
+                    <label>是否J2EE工程:</label>
+                    <label class="radio-inline">
+                        <input type="radio" value="Y" ng-model="code.isJ2ee"> 是
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" value="N" ng-model="code.isJ2ee"> 否
+                    </label>
+                </div>
+                <div class="form-group" ng-if="code.language==2">
+                    <label>解决方案:</label>
+                    <input type="text" class="form-control" ng-model="code.csharpFilePath" ng-pattern="/.+\.sln$/" maxlength="30" placeholder=".sln文件" required/>
+                    <label class="rule-tip-font">* 必须是.sln格式</label>
+                </div>
+            </div>
+            <div class="form-inline" ng-show="code.language!=1">
+                <div class="form-group">
+                    <label>源码来源:</label>
+                    <label class="radio-inline">
+                        <input type="radio" ng-model="code.getCodeType" value="0"> 本地
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" ng-model="code.getCodeType" value="1"> Svn
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" ng-model="code.getCodeType" value="2">Git
+                    </label> <!-- /input-group -->
+                </div>
+            </div>
+            <div class="form-inline" ng-show="code.getCodeType==0">
+                <label>上传文件:</label>
+                <div class="input-group" ng-show="code.getCodeType==0">
+                    <input type="text"  class="form-control form-inline" name="filename" id="filename"  ng-if="code.getCodeType==0"
+                           placeholder="只能上传*.zip格式文件" ng-pattern="/.+\.zip$/"  ng-model="filepath[code.language]" tooltip="{{filepath[code.language]}}"  required readonly/>
+                    <!--<span class="glyphicon glyphicon-remove form-control-icon-right-50 cursor_pointer" ng-show="filepath!=null&&filepath!=''" data-ng-click="filepath='';action_complete=false"></span>-->
+                    <span class="input-group-btn">
+                          <button class="btn btn-default" type="button" onclick="fileUpload.click()" ng-disabled="action_uploading">浏览</button>
+                          <input id="fileUpload" name="file" style="display: none;" type="file"  data-url="code/upload" />
+                    </span>
+                </div>
+                <div class="input-group" ng-show="code.getCodeType==0&&action_upload&&filepath!=''">
+                    <button class="btn btn-default" type="button" id="upload-btn">上传</button>
+                </div>
+                <div class="input-group" ng-show="code.getCodeType==0&&action_cancel" style="z-index: 10000000">
+                    <button class="btn btn-dark-gray" type="button" ng-click="upload_cancel()">取消</button>
+                </div>
+                <div class="input-group" ng-show="code.getCodeType==0&&action_uploading">
+                    <div id="progress" style="width: 120px;" ng-show="action_uploading">
+                        <div class="bar"></div>
+                    </div>
+                </div>
+
+                <label class="rule-tip-font" ng-if="langs.length>0 && code.language == 1">* 请上传中间表示文件</label>
+
+                <div class="input-group" ng-show="action_complete">
+                    <span class="text-success" ng-show="action_success">上传成功</span>
+                    <span class="text-danger" ng-show="!action_success">{{upload_error}}</span>
+                </div>
+
+            </div>
+            <div class="form-inline">
+                <div class="form-group" ng-if="code.getCodeType!=0">
+                    <label>&nbsp;&nbsp;{{code.getCodeType|codeTypeFilter}}地址:</label>
+                    <input type="text" name="svnGitUri" class="form-control" style="width: 250px;" ng-model="codeRepository[code.getCodeType].svnGitUri" required/>
+                    <label ng-if="code.getCodeType==2">Git分支名称:</label>
+                    <input ng-if="code.getCodeType==2" type="text" name="gitBranchName" ng-init="code.gitBranchName='master'" class="form-control" ng-model="code.gitBranchName" required/>
+                    <label>{{code.getCodeType|codeTypeFilter}}用户名:</label>
+                    <input type="text" name="svnGitUserName" class="form-control" ng-model="codeRepository[code.getCodeType].svnGitUserName" required/>
+                    <label>{{code.getCodeType|codeTypeFilter}}密码:</label>
+                    <input type="password" nmae="svnGitPwd" class="form-control" ng-model="codeRepository[code.getCodeType].svnGitPwd" required/>
+                   <!-- <button class="btn btn-green" type="button"
+                            ng-disabled="checkForm.svnGitUri.$invalid||checkForm.svnGitUserName.$invalid||code.svnGitPwd==''||code.svnGitPwd==null"
+                            ng-click="testConnect(code)">测试{{code.getCodeType|codeTypeFilter}}连接</button>-->
+                </div>
+            </div>
+            <div class="form-inline">
+                <label>检测模板:</label>
+                <div class="form-group">
+                    <select class="form-control"  ng-model="quick1.pkTemplate"
+                            ng-options="item.pkTemplate as item.templateName  for item in faultTpls|filter:{templateLang:code.language}">
+
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-inline">
+                <div class="form-group">
+                    <label>访问权限:</label>
+                    <label class="radio-inline">
+                        <input type="radio" name="inlineRadioOptions" value="0" ng-model="quick.quickPerm" ng-init="rawPerm=0" data-ng-click="rawPerm=0;quick.userPks=[];"> 仅自己
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="inlineRadioOptions" value="1" ng-model="quick.quickPerm"
+                               ng-click="show_user(rawPerm)"> 指定人员
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="inlineRadioOptions" value="2" ng-model="quick.quickPerm" data-ng-click="rawPerm=2;quick.userPks=[];"> 全部
+                    </label>
+                </div>
+            </div>
+
+          <!--  <div class="form-inline" ng-if="code.language==1">
+                <div class="form-group">
+                    <label>编译脚本:</label>
+                    <textarea class="form-control" style="width: 580px;" rows="3"   ng-model="code.cCompilerCmd" placeholder="输入编译脚本所在的绝对路径"></textarea>
+
+                </div>
+            </div>-->
+
+            <div class="form-inline"  ng-if="code.language==0||code.language==2">
+                <a class="btn btn-blue"  ng-click="show_function()">设置函数白名单</a>
+                <div class="panel panel-default border-TRBL" ng-show="action_function">
+                    <div class="panel-heading">
+                        <div class="input-group" style="width: 200px;float:left; margin-top: -4px;">
+                            <input type="text" class="form-control" ng-model="fn_search" placeholder="输入关键字">
+                              <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">查找</button>
+                              </span>
+                        </div>
+                        <div style="float:right;"><a style="color:#539F5E;" class="cursor_pointer"
+                                                     ng-click="show_function_win()">+添加函数白名单</a></div>
+                    </div>
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th><input  type="checkbox" ng-model="checkModel.checkall"   my-check="checkModel.checkAll(safeFns)"></th>
+                            <th>缺陷分类</th>
+                            <th>{{safeFnModule[code.language].moduleName}}</th>
+                            <th>类名</th>
+                            <th>方法名</th>
+                            <th>返回值</th>
+                            <th>参数列表</th>
+                            <th class="th-left-line"><a class="txt-yellow" ng-click="removefun()" ng-class="{disabled:!hasCheck(safeFns)}">删除选中项</a></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tbody>
+                        <tr ng-repeat="fn in safeFns|filter:{lang:code.language} | matchFilter:fn_search:['ruleVO.ruleType','ruleVO.ruleName','packageName','className','functionName','returnValue','paramList']">
+                            <td><input type="checkbox" ng-model="fn.checked" my-check ="checkModel.check(fn,safeFns)" /></td>
+                            <td>{{fn.ruleVO.ruleType+'-'+fn.ruleVO.ruleName}}</td>
+                            <td>{{fn.packageName}}</td>
+                            <td>{{fn.className}}</td>
+                            <td>{{fn.functionName}}</td>
+                            <td>{{fn.returnValue}}</td>
+                            <td>{{fn.paramList}}</td>
+                            <td><a ng-click="show_function_win($index,fn);">修改</a></td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+            <div class="button-group">
+                <a class="pro-btn-process btn-gray btn" href="javascript:void(0);" ng-click="cancelCreate()">取消</a>
+                <button class="btn btn-green" ng-disabled="langs.length==0||checkForm.$invalid||!action_success&&code.getCodeType==0" ng-click="create_task()">发起检测</button>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="mark"  ng-show="code.getCodeType==0&&action_uploading"></div>

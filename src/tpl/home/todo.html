@@ -1,0 +1,15 @@
+<div class="audit-info-box"></div>
+<div class="h-split" nsresize></div>
+<div class="audit-info-box">
+    <div style="height:100%">
+        <div>
+            <div style="overflow-y: auto">
+                造成SQL注入攻击的根本原因在于攻击者可以改变SQL查询的上下文，使程序员原本要作为数据解析的数值，被篡改为命令了。当构造一个SQL查询时，程序员应当清楚，哪些输入的数据将会成为命令的一部分，而哪些仅仅是作为数据。参数化SQL指令可以防止直接窜改上下文，避免几乎所有的SQL注入攻击。参数化SQL指令是用常规的SQL字符串构造的，但是当需要加入用户输入的数据时，它们就会创建捆绑参数，这些捆绑参数是一些占位符，用来存放随后插入的数据。捆绑参数可以使程序员清楚地分辨数据库中的数据，即其中有哪些输入可以看作命令的一部分，哪些输入可以看作数据。这样，当程序准备执行某个指令时，它可以详细地告知数据库，每一个捆绑参数所使用的运行时的值，而不会被解析成对该命令的修改。 使用参数化SQL指令（替代用户输入连续的字符串），如下所示： ... string userName = ctx.getAuthenticatedUserName(); conn = new SqlConnection(_ConnectionString); conn.Open(); SqlCommand query = new SqlCommand( "SELECT * FROM items WHERE itemname=@ItemName AND owner=@OwnerName", conn); query.Parameters.AddWithValue("@ItemName", ItemName.Text); query.Parameters.AddWithValue("@OwnerName", userName); SqlDataReader objReader = objCommand.ExecuteReader(); ... 当必须要根据用户输入来改变命令结构时，可以使用间接的方法来防止SQL注入攻击：创建一个合法的字符串集合，使其对应于可能要加入到SQL指令中的不同元素。在构造一个SQL指令时，让用户从这个集合中去选择字符串，因为这个集合的字符串在系统的控制之内。
+
+
+            </div>
+        </div>
+    </div>
+
+
+</div>

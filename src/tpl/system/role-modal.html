@@ -1,0 +1,24 @@
+<div class="form-horizontal add-role"   novalidate>
+    <div class="form-group">
+        <label  class="col-md-2 control-label">角色名称:</label>
+        <div class="col-md-10">
+            <input type="text"  name="roleName" class="form-control" ng-model="role.roleName" required maxlength="30"
+                   tooltip="{{modalForm.roleName.$invalid?'角色名称不能为空':''}}" tooltip-placement="bottom"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label  class="col-md-2 control-label">权限:</label>
+        <div class="col-md-10">
+            <div style="max-height:250px;overflow-y: auto; ">
+                <ul tree  class="ztree" datas="resourceTree"  check="true" ></ul>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">描述信息:</label>
+        <div class="col-md-10">
+            <textarea class="form-control" ng-model="role.roleDesc" maxlength="50"></textarea>
+
+        </div>
+    </div>
+</div>
